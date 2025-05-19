@@ -9,7 +9,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
-use App\Http\Controllers\SavedPostController;  // ← Añadido
+use App\Http\Controllers\SavedPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->get('my-private-groups', function (Request $r
 
 /*
 |--------------------------------------------------------------------------
-| My Groups
+| My Groupstest
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth:sanctum')->get('my-groups', function (Request $request) {
@@ -157,6 +157,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('users',        'index');
         Route::post('users',       'store');
+        Route::get('users/{id}',   'show');
         Route::put('users/{id}',   'update');
         Route::delete('users/{id}','destroy');
     });

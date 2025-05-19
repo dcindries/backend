@@ -15,7 +15,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'profile_photo_path',    // la columna real
+        'profile_photo_path',
     ];
 
     protected $appends = [

@@ -95,14 +95,45 @@ class UserController extends BaseController
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
+
         $data = $request->validate([
-            'name'  => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:users,email,'.$id,
-            'role'  => 'sometimes|in:user,admin',
+            'name'          => 'sometimes|required|string|max:255',
+            'email'         => 'sometimes|required|email|unique:users,email,'.$id,
+            'password'      => 'nullable|string|min:6',
+            'profile_photo' => 'nullable|image|max:2048',
         ]);
-        $user->update($data);
+
+        // Si llega nueva contraseña, la hasheamos
+        if (! empty($data['password'])) {
+            $user->password = Hash::make($data['password']);
+        }
+
+        // Si llega nueva foto, eliminamos la antigua y subimos la nueva
+        if ($request->hasFile('profile_photo')) {
+            if ($user->profile_photo_path) {
+                Storage::disk('public')->delete($user->profile_photo_path);
+            }
+            $path = $request->file('profile_photo')
+                ->store('profile_photos', 'public');
+            $user->profile_photo_path = $path;
+        }
+
+        // Name / Email
+        if (isset($data['name']))  $user->name  = $data['name'];
+        if (isset($data['email'])) $user->email = $data['email'];
+
+        $user->save();
+
         return response()->json($user->fresh(), 200);
     }
+
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+        return response()->json($user, 200);
+    }
+
+
 
     /**
      * DELETE /api/users/{id}

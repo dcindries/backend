@@ -35,11 +35,12 @@ class SavedPostController extends BaseController
         return response()->json(['message' => 'Post eliminado de guardados']);
     }
 
-    public function mySavedPosts()
+    public function index()
     {
         $user = Auth::user();
-        $posts = SavedPost::with('post.group')->where('user_id', $user->id)->get();
-
+        $posts = SavedPost::with('post.group')
+            ->where('user_id', $user->id)
+            ->get();
         return response()->json($posts);
     }
 }
