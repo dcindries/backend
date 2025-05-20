@@ -1,0 +1,13 @@
+# Ignorar dependencias de Composer
+/vendor/
+
+# Ignorar el env de Laravel
+.env
+
+# Ignorar storage compilado (logs, sesiones, etc)
+/storage/
+!/storage/app/public
+!/storage/framework/cache/data
+
+# Ignorar archivos de sistema
+.DS_Store
